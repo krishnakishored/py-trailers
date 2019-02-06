@@ -1,4 +1,5 @@
-import pandas as pd
+import pandas as pd # for extracting columns form csv
+import xlrd  # for converting xlsx to csv 
 
 def dict_zip(*dicts, fillvalue=None):
     '''
@@ -12,19 +13,26 @@ def dict_zip(*dicts, fillvalue=None):
 
 def get_runtime_base_voice_dict(base_file, output_lang):
     '''
-    1. reading base csv file from url
+    1. Read the base xlsx & convert it csv 
     2. populate the base_voice_dict for runtime access
     '''
-    with open(base_file, encoding='UTF-16') as f:
+    
+
+    # Convert the xlsx to csv 
+    data_xls = pd.read_excel(base_file,'Sheet1')  # set to default 'Sheet1' 
+    input_csv = base_file.replace('.xlsx','.csv')
+    data_xls.to_csv(input_csv, encoding='utf-16', index=False) # index set to 'False' to avoid column numbers
+    # Fixed: UnicodeError: UTF-16 stream does not start with BOM
+    with open(input_csv, encoding='UTF-16') as f:
         raw_data = pd.read_csv(f)
-    # # dropping null value columns to avoid errors
+    # dropping null value columns to avoid errors
     raw_data.dropna(inplace=True)
+   
 
     # converting to dict
     csv_dict = raw_data.to_dict()
     target_column = raw_data[translation_map[output_lang]]
-    # base_column = raw_data[translation_map['TEXT TO BE TRANSLATED']]
-    base_column = raw_data[translation_map['english']]
+    base_column = raw_data[translation_map['english']] # default 'english' as the base column
     base_voice_list = []
     zipped = dict_zip(base_column, target_column)
 
@@ -70,27 +78,36 @@ def translate(base_file, input_file, output_lang):
                 if query_text is not None and query_text in reference_dict:
                     # print(query_text)
                     target_text = reference_dict[query_text]
-                    print(target_text)
+                    # print(target_text)
                     text_to_replace = get_text_inbetween(line, '"', '"')
                     line = line.replace(text_to_replace, target_text)
                     # print(line)                    
                 f_out.write(line)
 
 
-# maps argument to column names in the BaseVoiceString.csv
-translation_map = {
-    "english": "TEXT TO BE TRANSLATED",
-    "portuguese": "pt-BR (Brazilian Portuguese)",
-    "czech": "cz-CZ (Czech)",
-    "polish": "pl-PL (Polish)",
-    "swedish": "sv-SE (Swedish)",
-    "norwegian": "no-NO (Norwegian)"
-}
+
 
 if __name__ == "__main__":
-    # translate('./base/BaseVoiceString.csv', 'TTS_basicaudio-cs-CS.sexp', 'polish')
-    # translate('./base/BaseVoiceString.csv', 'TTS_basicaudio-cs-CS.sexp', 'czech')
-    # translate('./base/BaseVoiceString.csv', 'TTS_basicaudio-cs-CS.sexp', 'swedish')
-    # translate('./base/BaseVoiceString.csv', 'TTS_basicaudio-cs-CS.sexp', 'swedish')
-    for language in translation_map.keys():
-        translate('./base/BaseVoiceString.csv', 'TTS_basicaudio-cs-CS.sexp', language)
+   
+    base_file = 'Base_voice_string_translations.xlsx'
+    input_file = 'TTS_basicaudio-cs-CS.sexp'
+    output_lang = 'swedish'
+    # translate(base_file,input_file, output_lang)
+        
+
+
+        # maps argument to column names in the BaseVoiceString.csv
+    translation_map = {
+        "english": "TEXT TO BE TRANSLATED",
+        "portuguese": "pt-BR (Brazilian Portuguese)",
+        "czech": "cz-CZ (Czech)",
+        "polish": "pl-PL (Polish)",
+        "swedish": "sv-SE (Swedish)",
+        "norwegian": "no-NO (Norwegian)"
+    }
+    
+    # Update the 'translation_map'  dictionary to generate all files in one go
+    for out_lang in translation_map.keys():
+        translate(base_file,input_file, out_lang)
+
+    
