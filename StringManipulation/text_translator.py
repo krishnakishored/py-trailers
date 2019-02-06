@@ -42,7 +42,9 @@ def get_runtime_base_voice_dict(base_file, output_lang):
     # converting to dict
     csv_dict = raw_data.to_dict()
     target_column = raw_data[translation_map[output_lang]]
+    # print(target_column)
     base_column = raw_data[translation_map['english']] # default 'english' as the base column
+    # print(base_column)
     base_voice_list = []
     zipped = dict_zip(base_column, target_column)
     for val in zipped.values():
@@ -56,6 +58,7 @@ def find_next_word_after_match(input_string, search_word):
     next_word = None
     if search_word in list_of_words:
         next_word = list_of_words[list_of_words.index(search_word) + 1]
+    print(next_word)
     return next_word
 
 
@@ -83,13 +86,13 @@ def text_translator(base_file, input_file, output_lang):
     with open(input_file, 'r') as f_in:
         with open(output_file, 'w', encoding='utf16') as f_out:
             for line in f_in:
-                # ToDo: string manipulation
-                query_text = find_next_word_after_match(line, '(name')
+                query_text =  get_text_inbetween(line,'"','"')
+                # print(query_text)
                 if query_text is not None and query_text in reference_dict:
-                    # print(query_text)
                     target_text = reference_dict[query_text]
                     # print(target_text)
                     text_to_replace = get_text_inbetween(line, '"', '"')
+                    # print(text_to_replace)
                     line = line.replace(text_to_replace, target_text)
                     # print(line)                    
                 f_out.write(line)
@@ -115,9 +118,11 @@ if __name__ == "__main__":
    
     # base_file = 'Base_voice_string_translations.xlsx'
     # input_file = 'TTS_basicaudio-cs-CS.sexp'
-    # output_lang = 'swedish'
-    # # text_translator(base_file,input_file, output_lang)
+    # output_lang = 'polish'
+    # text_translator(base_file,input_file, output_lang)
         
+    # dict_1 = get_runtime_base_voice_dict('Base_voice_string_translations.xlsx','polish')
+    # print(dict_1)
     
 
     
