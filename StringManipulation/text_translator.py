@@ -89,10 +89,10 @@ def text_translator(base_file, input_file, output_lang):
                 query_text =  get_text_inbetween(line,'"','"')
                 # print(query_text)
                 if query_text is not None and query_text in reference_dict:
-                    target_text = reference_dict[query_text]
+                    # target_text = reference_dict[query_text]
                     # print(target_text)
-                    text_to_replace = get_text_inbetween(line, '"', '"')
-                    # print(text_to_replace)
+                    text_to_replace = get_text_inbetween(line, 'text ', ' duration')
+                    target_text = '"'+reference_dict[query_text]+'"'
                     line = line.replace(text_to_replace, target_text)
                     # print(line)                    
                 f_out.write(line)
@@ -103,7 +103,7 @@ def run_text_translator_with_args(*args,**kwargs):
     parser = argparse.ArgumentParser(description='text_translator')
     parser.add_argument("-b","--base", help="full filename of base_file.xlsx", default="Base_voice_string_translations.xlsx")
     parser.add_argument("-i","--input", help="full filename of input_file.sexp", default="TTS_basicaudio-cs-CS.sexp")
-    parser.add_argument("-l","--language", help="select:  portuguese, czech, polish, swedish, norwegian or all", default="swedish")
+    parser.add_argument("-l","--language", help="select:  portuguese, czech, polish, swedish, norwegian or all", default="all")
     args = parser.parse_args()
     if(args.language != 'all'):
         text_translator(args.base,args.input, args.language)
@@ -114,15 +114,15 @@ def run_text_translator_with_args(*args,**kwargs):
 
 
 if __name__ == "__main__":
-    run_text_translator_with_args()
+    # run_text_translator_with_args()
    
     # base_file = 'Base_voice_string_translations.xlsx'
     # input_file = 'TTS_basicaudio-cs-CS.sexp'
     # output_lang = 'polish'
     # text_translator(base_file,input_file, output_lang)
         
-    # dict_1 = get_runtime_base_voice_dict('Base_voice_string_translations.xlsx','polish')
-    # print(dict_1)
+    dict_1 = get_runtime_base_voice_dict('Base_voice_string_translations.xlsx','czech')
+    print(dict_1)
     
 
     
