@@ -7,7 +7,6 @@
  * Use is subject to license terms included in the distribution.
  */
 
-
 #include<iostream>
 
 int main(){
