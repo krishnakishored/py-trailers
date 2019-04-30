@@ -1,12 +1,17 @@
+/*!--------------------------------------------------------------------------
+@file         NKUIController.h
+@defgroup     nkui
+*/
 /*
- * Copyright (c) 2019, attetta Systems, Inc.,
- * a wholly-owned subsidiary of Comtech attettas Corp.
- * and/or affiliates of attetta Systems, Inc.
- * All rights reserved.
- * attetta Systems, Inc. PROPRIETARY/CONFIDENTIAL.
- * Use is subject to license terms included in the distribution.
- */
+(C) Copyright 2014 by attettas Systems, Inc.
 
+The information contained herein is confidential, proprietary to
+attetta Systems, Inc., and considered a trade secret as defined
+in section 499C of the penal code of the State of California. Use of this
+information by anyone other than authorized employees of attetta
+Systems is granted only under a written non-disclosure agreement, expressly
+prescribing the scope and manner of such use.
+--------------------------------------------------------------------------*/
 
 
 #include<iostream>

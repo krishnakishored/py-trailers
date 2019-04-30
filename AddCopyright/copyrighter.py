@@ -19,7 +19,7 @@ def get_list_of_files_in_directory(src_code_directory):
 def get_list_of_files_by_extension(src_code_directory,extn):
     from pathlib import Path
     basepath = Path(src_code_directory)
-    list_of_files = basepath.glob('**/*.'+extn)
+    list_of_files = basepath.glob('**/*.' + str(extn))
     extn_files = []
     for item in list_of_files:
         extn_files.append(str(item))
@@ -45,7 +45,11 @@ def prepend_copyright_text_single(src_code_file,copyright_file):
         fsrc_new.write(full_content)
 ###############################################################################
 def prepend_copyright_text_all(copyright_file, src_code_directory,extn_list):
-    list_of_files = get_list_of_files_by_extension(src_code_directory,'cpp') # hardcoded: ToDo: changes to extn
+    list_of_files=[]
+    for ext in extn_list:
+        list_of_files.extend(get_list_of_files_by_extension(src_code_directory,ext))
+        # list_of_files=get_list_of_files_by_extension(src_code_directory,ext) # hardcoded: ToDo: changes to extn
+     
     # print(list_of_files)
     for src_code_file in list_of_files:
         prepend_copyright_text_single(src_code_file,copyright_file)
@@ -69,7 +73,16 @@ def replace_copyright_text_all(old_copyright_file, new_copyright_file, src_code_
                 new_copyright_text = fnewcopy.read()  
         list_of_files = get_list_of_files_by_extension(src_code_directory,extn_list)   
         for src_code_file in list_of_files:
-                replace_copyright_text_single(src_code_file,old_copyright_text,new_copyright_text)                
+                replace_copyright_text_single(src_code_file,old_copyright_text,new_copyright_text)   
+
+###############################################################################
+'''
+Looks  for the old copyright text. 
+If it's not found, prepend the new copyright_text. Else, Replace the old with new 
+'''
+
+def update_copyright_text_all(old_copyright_file, new_copyright_file, src_code_directory, extn_list):
+        list_of_files = get_list_of_files_by_extension(src_code_directory,extn_list)  
 
 ###############################################################################
 
