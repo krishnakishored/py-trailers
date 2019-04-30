@@ -29,7 +29,7 @@ def get_list_of_files_by_extension(src_code_directory,extn):
 ###############################################################################
 
 def prepend_copyright_text_single(src_code_file,copyright_file):
-    from tempfile import TemporaryFile
+#     from tempfile import TemporaryFile
     copyright_text = get_copyright_text(copyright_file)
     with open(src_code_file,"r") as fsrc:
         src_code = fsrc.read()
@@ -44,48 +44,48 @@ def prepend_copyright_text_single(src_code_file,copyright_file):
     with open(src_code_file,"w+") as fsrc_new:
         fsrc_new.write(full_content)
 ###############################################################################
-def prepend_copyright_text_all(src_code_directory,copyright_file):
+def prepend_copyright_text_all(copyright_file, src_code_directory,extn_list):
     list_of_files = get_list_of_files_by_extension(src_code_directory,'cpp') # hardcoded: ToDo: changes to extn
     # print(list_of_files)
     for src_code_file in list_of_files:
         prepend_copyright_text_single(src_code_file,copyright_file)
 
 ###############################################################################
-#3. Create a temporary file
-# from tempfile import TemporaryFile
-
-# # save the tempfile contents in the src_file
-# from shutil import copyfileobj
-
-# # Create a temporary file and write some data to it
-# ftemp = TemporaryFile('w+t') # This will create and open a file that can be used as a temporary storage area.
-
-# full_content = copyright_text + "\n" + src_code
-# ftemp.write(full_content)
-# # Go back to the beginning and read data from file
-# ftemp.seek(0)
-# data = ftemp.read()
-# # print(data)
+# Find and replace copyright text
+def replace_copyright_text_single(src_code_file,old_copyright_text,new_copyright_text):
+#     from tempfile import TemporaryFile
+    with open(src_code_file,"r") as fsrc:
+        src_code = fsrc.read()
+        # print(src_code)
+        full_content = src_code.replace(old_copyright_text,new_copyright_text)
+    with open(src_code_file,"w") as fsrc_new:
+        print(src_code_file)
+        fsrc_new.write(full_content)
 
 
-# with open('test_1.cpp','w+') as fsrc:
-#     # copyfileobj(ftemp,fsrc)
-#     fsrc.write(data)
-# # Close the file, after which it will be removed
-# ftemp.close()
+def replace_copyright_text_all(old_copyright_file, new_copyright_file, src_code_directory, extn_list):
+        with open(old_copyright_file,"r") as foldcopy, open(new_copyright_file,"r") as fnewcopy:
+                old_copyright_text = foldcopy.read()
+                new_copyright_text = fnewcopy.read()  
+        list_of_files = get_list_of_files_by_extension(src_code_directory,extn_list)   
+        for src_code_file in list_of_files:
+                replace_copyright_text_single(src_code_file,old_copyright_text,new_copyright_text)                
 
 ###############################################################################
 
 if __name__=="__main__":
-    copyright_file = 'copyright.txt'
-    src_code_file = 'test_1.cpp'
+    new_copyright_file = 'copyright.txt'
+    old_copyright_file = './old_copyright_samples/old_copyright_2.txt'
+    # src_code_file = 'test_1.cpp's
     # copyright_text = get_copyright_text(copyright_file)
     # print(copyright_text)
     # prepend_copyright_text(src_code_file,copyright_file)
     src_code_directory = 'my_directory'
     # get_list_of_files_to_update(src_code_directory)
-    extn = 'cpp'
-    list_of_files = get_list_of_files_by_extension(src_code_directory,extn)
+#     extn = 'cpp'
+#     list_of_files = get_list_of_files_by_extension(src_code_directory,extn)
     # print(list(list_of_files))
-    prepend_copyright_text_all(src_code_directory,copyright_file)
+#     prepend_copyright_text_all(src_code_directory,copyright_file)
+    replace_copyright_text_all(old_copyright_file,new_copyright_file,src_code_directory,'cpp')
+
 
