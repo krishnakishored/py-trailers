@@ -3,5 +3,6 @@
  "new_copyright_file":   "./new_copyright_file.txt",
  "file_extension_list" : ["cpp","h","qml"],
  "src_code_dir" : "./my_directory",
- "old_copyright_dir:":   "./old_copyright_dir/"
+ "old_copyright_dir:":   "./old_copyright_dir/",
+ "ignore_directories_list": ["build"]
 }

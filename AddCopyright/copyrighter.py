@@ -16,12 +16,17 @@ def read_config(config_file='defaults.json'):
 
 
 def run_copyrighter_with_args(*args, **kwargs):
+    
     default_config = read_config()
+    # parser.add_argument("-c", "--cfg", help="config file", default='./defaults.json')
+    # default_config = read_config(args.cfg)
     parser = argparse.ArgumentParser(description='copyrighter')
     parser.add_argument("-o", "--old", help="full filename of old_copyright_file.txt", default=default_config["old_copyright_file"])
     parser.add_argument("-n", "--new", help="full filename of new_copyright_file.txt", default=default_config["new_copyright_file"])
     parser.add_argument("-e", "--ext", help="list of file extenstions", default=default_config["file_extension_list"])
     parser.add_argument("-s", "--src", help="source directory", default=default_config["src_code_dir"])
+    parser.add_argument("-i", "--ign", help="list of directories to ignore", default=default_config["ignore_directories_list"])
+    
     # parser.add_argument("-n", "--new", help="full filename of new_copyright_file.txt", default="new_copyright_file.txt")
     # parser.add_argument("-o", "--old", help="full filename of old_copyright_file.txt", default="old_copyright_file.txt")
     # parser.add_argument("-e", "--ext", help="list of file extenstions", default="cpp,h")
