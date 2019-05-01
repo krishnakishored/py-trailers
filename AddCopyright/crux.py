@@ -8,6 +8,19 @@ def get_copyright_text(copyright_file):
     return copyright_text
 
 ###############################################################################
+def get_filtered_list(list_of_elements, values):      
+        filtered_lists = []
+        try:
+            for value in values:
+               filtered_lists.append(set([x for x in list_of_elements if -1 == x.find(value) ]))
+        except ValueError:
+            pass
+        # interesection = list(set(lst1) & set(lst2)) 
+        # for s1,s2 in filtered_lists:
+
+        return filtered_lists
+       
+
 ## 2. Listing All Files in a Directory
 def get_list_of_files_in_directory(src_code_directory):
     from pathlib import Path
@@ -16,13 +29,15 @@ def get_list_of_files_in_directory(src_code_directory):
     for entry in entries:
         print(entry.name)
 
-def get_list_of_files_by_extension(src_code_directory,extn):
+def get_list_of_files_by_extension(src_code_directory,extn,ignore_dirs=['build','bin']):
     from pathlib import Path
     basepath = Path(src_code_directory)
     list_of_files = basepath.glob('**/*.' + str(extn))
     extn_files = []
     for item in list_of_files:
-        extn_files.append(str(item))
+        extn_files.append(str(item))    
+    # filter out the ignore_directories    
+
     return extn_files
 
 ###############################################################################
@@ -150,12 +165,21 @@ if __name__=="__main__":
     # copyright_text = get_copyright_text(copyright_file)
     # print(copyright_text)
     # prepend_copyright_text(src_code_file,copyright_file)
-    src_code_directory = 'my_directory'
+    
     # get_list_of_files_to_update(src_code_directory)
 #     extn = 'cpp'
 #     list_of_files = get_list_of_files_by_extension(src_code_directory,extn)
     # print(list(list_of_files))
 #     prepend_copyright_text_all(src_code_directory,copyright_file)
-    replace_copyright_text_all(old_copyright_file,new_copyright_file,src_code_directory,'cpp')
+#     replace_copyright_text_all(old_copyright_file,new_copyright_file,src_code_directory,'cpp')
 
+###############################################################################
+#       src_code_directory = 'my_directory' 
+#       ignore_dir = ['build'] 
+#       extn = ['cpp','h']
+#       get_list_of_files_by_extension(src_code_directory,extn,ignore_dir)
 
+###############################################################################
+#     list_of_elements = ['~/coding/python-coding/AddCopyright','~/coding/python-coding/trailers-py/AddCopyright','~/coding/trailers-py-2/AddCopyright']
+#     values = ['python-coding', 'trailers-py']
+#     print(get_filtered_list(list_of_elements,values))
