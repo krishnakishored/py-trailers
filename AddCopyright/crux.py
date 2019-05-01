@@ -8,17 +8,31 @@ def get_copyright_text(copyright_file):
     return copyright_text
 
 ###############################################################################
-def get_filtered_list(list_of_elements, values):      
-        filtered_lists = []
-        try:
-            for value in values:
-               filtered_lists.append(set([x for x in list_of_elements if -1 == x.find(value) ]))
-        except ValueError:
-            pass
+def get_filtered_list(list_of_elements, values):            
+        for val in values:
+               filtered_list = [x for x in list_of_elements if x.find(val) == -1]
+               print(filtered_list)
+
+
+        # filtered_lists = []
+        
+        # filtered_lists = [elem for elem in list_of_elements if any((elem.find(x)== -1) for x in values )]
+
+        # for value in values:
+                
+                # filtered_lists = [x for x in list_of_elements if ]s
+                # filtered_lists[:] -  You can use slice assignment if the original list must be modified, while still using an efficient list comprehension
+                # filtered_lists.extend([element for element in filtered_lists if element.find(value) == -1])
+        
+        # try:
+        #     for value in values:
+        #        filtered_lists.append(set([x for x in list_of_elements if -1 == x.find(value) ]))
+        # except ValueError:
+        #     pass
         # interesection = list(set(lst1) & set(lst2)) 
         # for s1,s2 in filtered_lists:
 
-        return filtered_lists
+        return filtered_list
        
 
 ## 2. Listing All Files in a Directory
@@ -26,8 +40,11 @@ def get_list_of_files_in_directory(src_code_directory):
     from pathlib import Path
     basepath = Path(src_code_directory)
     entries = (entry for entry in basepath.iterdir() if entry.is_file())
+    list_of_files = []
     for entry in entries:
-        print(entry.name)
+        # print(entry.name)
+        list_of_files.append(entry)
+    return list_of_files
 
 def get_list_of_files_by_extension(src_code_directory,extn,ignore_dirs=['build','bin']):
     from pathlib import Path
@@ -117,11 +134,30 @@ Looks  for the old copyright text.
 If it's not found, prepend the new copyright_text. Else, Replace the old with new 
 '''
 
-def update_copyright_text_all(old_copyright_file, new_copyright_file, src_code_directory, extn_list):
+def get_all_old_copyright_text(old_copyright_directory):
+        import os
+        all_old_copyright_text = []
+        if os.path.isdir(old_copyright_directory):
+                list_of_files_in_dir = get_list_of_files_in_directory(old_copyright_directory)
+                
+                for old_copyright_file  in list_of_files_in_dir:
+                        with open(old_copyright_file,"r") as foldcopy:
+                                all_old_copyright_text.append(foldcopy.read())
+        elif os.path.isfile(old_copyright_directory):
+                all_old_copyright_text = old_copyright_directory
+        
+        return all_old_copyright_text
+
+
+def update_copyright_text_all(old_copyright_file, new_copyright_file, src_code_directory, extn_list,old_copyright_directory):
         import mmap
         import os
         # read the old & neew copyright text
         try:
+               # get the list of old copyright texts
+               all_old_copyright_text = get_all_old_copyright_text(old_copyright_directory)
+               
+               
                with open(old_copyright_file,"r") as foldcopy, open(new_copyright_file,"r") as fnewcopy:
                 old_copyright_text = foldcopy.read()
                 new_copyright_text = fnewcopy.read()  
@@ -180,6 +216,10 @@ if __name__=="__main__":
 #       get_list_of_files_by_extension(src_code_directory,extn,ignore_dir)
 
 ###############################################################################
-#     list_of_elements = ['~/coding/python-coding/AddCopyright','~/coding/python-coding/trailers-py/AddCopyright','~/coding/trailers-py-2/AddCopyright']
-#     values = ['python-coding', 'trailers-py']
-#     print(get_filtered_list(list_of_elements,values))
+#     list_of_elements = ['~/coding/python-coding/1','~/coding/python-coding/2','~/trailers-py-2/AddCopyright']
+#     values = ['/1' ,'/2']
+#     get_filtered_list(list_of_elements,values)
+###############################################################################
+#     old_copyright_directory = 'old_copyright_dir/old_copyright_2.txt'
+    old_copyright_directory = 'old_copyright_dir'
+    print(get_all_old_copyright_text(old_copyright_directory))
