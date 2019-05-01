@@ -154,23 +154,18 @@ def update_copyright_text_all(old_copyright_file, new_copyright_file, src_code_d
         import os
         # read the old & neew copyright text
         try:
-               # get the list of old copyright texts
-               all_old_copyright_text = get_all_old_copyright_text(old_copyright_directory)
-               
-               
-               with open(old_copyright_file,"r") as foldcopy, open(new_copyright_file,"r") as fnewcopy:
-                old_copyright_text = foldcopy.read()
-                new_copyright_text = fnewcopy.read()  
-                # print(src_code_directory,extn_list)
+               # get the list of old copyright texts & the new copyright text
+                list_of_old_copyright_texts = get_all_old_copyright_text(old_copyright_directory)               
+                with open(new_copyright_file,"r") as fnewcopy:
+                        new_copyright_text = fnewcopy.read()  
+                
                 # get the list of src files to update
                 list_of_files=[]
                 for ext in extn_list:
                         list_of_files.extend(get_list_of_files_by_extension(src_code_directory,ext))
        
-        # print(list_of_files)
                 for src_code_file in list_of_files:
-                        # print(os.stat(src_code_file).st_size)
-                        
+                        # print(os.stat(src_code_file).st_size)                        
                         if (os.stat(src_code_file).st_size==0): # to handle the empty file
                                 with open(src_code_file,"w") as fsrc:
                                         fsrc.write(new_copyright_text)
@@ -179,15 +174,21 @@ def update_copyright_text_all(old_copyright_file, new_copyright_file, src_code_d
                                         with mmap.mmap(fsrc.fileno(), 0, access=mmap.ACCESS_READ) as m:
                                                 # read the first 500 bytes to compare. Don't need to parse the entire file for copyright
                                                 content = m.read(500)
-                                                
-                                        if(-1 == content.find(old_copyright_text[:100].encode())):
-                                                prepend_copyright_text_single(src_code_file,new_copyright_text)
+
+                                        doPrepend = True
+                                        #loop the list_of_old_copyright_texts & check if the src_code_file contains any of them
+                                        for old_copyright_text in list_of_old_copyright_texts:                                                
+                                                if(-1 != content.find(old_copyright_text[:400].encode())):
+                                                        replace_copyright_text_single(src_code_file,old_copyright_text,new_copyright_text)
+                                                        doPrepend = False                                                        
+                                                        break
                                         # elif(-1 != content.find(new_copyright_text[:100].encode())):  # ignore if the new copyright already exists
                                         #         print(new_copyright_text[:100])
                                         #         continue 
-                                        else:
+                                        
                                                 # print(new_copyright_text[:100])
-                                                replace_copyright_text_single(src_code_file,old_copyright_text,new_copyright_text)
+                                        if doPrepend:
+                                                prepend_copyright_text_single(src_code_file,new_copyright_text)
                         
         except Exception as e:
                print(e)
