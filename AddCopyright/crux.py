@@ -167,7 +167,7 @@ def update_copyright_text_all(new_copyright_file, src_code_directory, extn_list,
                                                         doPrepend = False                                                        
                                                         break
                                         
-                                        # ignore if the new copyright already exists        
+                                        # avoid if the new copyright already exists        
                                         if doPrepend and (-1 == content.find(new_copyright_text[:].encode())):
                                                 prepend_copyright_text_single(src_code_file,new_copyright_text)
                         
