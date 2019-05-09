@@ -133,7 +133,7 @@ def get_all_old_copyright_text(old_copyright_directory):
         return all_old_copyright_text
 
 
-def update_copyright_text_all(old_copyright_file, new_copyright_file, src_code_directory, extn_list,old_copyright_directory,ignore_dirs=['build','bin']):
+def update_copyright_text_all(new_copyright_file, src_code_directory, extn_list,old_copyright_directory,ignore_dirs=['build','bin']):
         import mmap
         import os
         # read the old & neew copyright text
@@ -156,22 +156,19 @@ def update_copyright_text_all(old_copyright_file, new_copyright_file, src_code_d
                         else:
                                 with open(src_code_file,"r") as fsrc:
                                         with mmap.mmap(fsrc.fileno(), 0, access=mmap.ACCESS_READ) as m:
-                                                # read the first 500 bytes to compare. Don't need to parse the entire file for copyright
-                                                content = m.read(500)
+                                                # read the first 5000 bytes to compare. Don't need to parse the entire file for copyright
+                                                content = m.read(5000)
 
                                         doPrepend = True
                                         #loop the list_of_old_copyright_texts & check if the src_code_file contains any of them
                                         for old_copyright_text in list_of_old_copyright_texts:                                                
-                                                if(-1 != content.find(old_copyright_text[:400].encode())):
+                                                if(-1 != content.find(old_copyright_text[:].encode())):
                                                         replace_copyright_text_single(src_code_file,old_copyright_text,new_copyright_text)
                                                         doPrepend = False                                                        
                                                         break
-                                        # elif(-1 != content.find(new_copyright_text[:100].encode())):  # ignore if the new copyright already exists
-                                        #         print(new_copyright_text[:100])
-                                        #         continue 
                                         
-                                                # print(new_copyright_text[:100])
-                                        if doPrepend:
+                                        # ignore if the new copyright already exists        
+                                        if doPrepend and (-1 == content.find(new_copyright_text[:].encode())):
                                                 prepend_copyright_text_single(src_code_file,new_copyright_text)
                         
         except Exception as e:

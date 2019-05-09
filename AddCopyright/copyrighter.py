@@ -21,7 +21,7 @@ def run_copyrighter_with_args(*args, **kwargs):
     # parser.add_argument("-c", "--cfg", help="config file", default='./defaults.json')
     # default_config = read_config(args.cfg)
     parser = argparse.ArgumentParser(description='copyrighter')
-    # parser.add_argument("-o", "--old", help="full filename of old_copyright_file.txt", default=default_config["old_copyright_file"])
+    # parser.add_argument("-o", "--old", help="full filename of old_copyright_file.stxt", default=default_config["old_copyright_file"])
     parser.add_argument("-n", "--new", help="full filename of new_copyright_file.txt", default=default_config["new_copyright_file"])
     parser.add_argument("-e", "--ext", help="list of file extenstions", default=default_config["file_extension_list"])
     parser.add_argument("-s", "--src", help="source directory", default=default_config["src_code_dir"])
@@ -35,7 +35,7 @@ def run_copyrighter_with_args(*args, **kwargs):
     # parser.add_argument("-s", "--src", help="source directory", default="my_directory")
     args = parser.parse_args()
 
-    update_copyright_text_all(args.old,args.new,args.src,args.ext,args.ocd,args.ign)
+    update_copyright_text_all(args.new,args.src,args.ext,args.ocd,args.ign)
     # if(args.language != 'all'):
     #     text_translator(args.base, args.input, args.language)
     # else:
