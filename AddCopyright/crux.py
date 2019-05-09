@@ -9,34 +9,14 @@ def get_copyright_text(copyright_file):
 
 ###############################################################################
 def get_filtered_list(list_of_elements, values):            
+        filtered_list = list_of_elements
         for val in values:
-               filtered_list = [x for x in list_of_elements if x.find(val) == -1]
-               print(filtered_list)
-
-
-        # filtered_lists = []
-        
-        # filtered_lists = [elem for elem in list_of_elements if any((elem.find(x)== -1) for x in values )]
-
-        # for value in values:
-                
-                # filtered_lists = [x for x in list_of_elements if ]s
-                # filtered_lists[:] -  You can use slice assignment if the original list must be modified, while still using an efficient list comprehension
-                # filtered_lists.extend([element for element in filtered_lists if element.find(value) == -1])
-        
-        # try:
-        #     for value in values:
-        #        filtered_lists.append(set([x for x in list_of_elements if -1 == x.find(value) ]))
-        # except ValueError:
-        #     pass
-        # interesection = list(set(lst1) & set(lst2)) 
-        # for s1,s2 in filtered_lists:
-
-        return filtered_list
-       
+               filtered_list = [x for x in filtered_list if x.find(val) == -1]
+        #        print(filtered_list)
+        return filtered_list       
 
 ## 2. Listing All Files in a Directory
-def get_list_of_files_in_directory(src_code_directory):
+def get_list_of_files_in_directory(src_code_directory,ignore_dirs=[]):
     from pathlib import Path
     basepath = Path(src_code_directory)
     entries = (entry for entry in basepath.iterdir() if entry.is_file())
@@ -44,9 +24,12 @@ def get_list_of_files_in_directory(src_code_directory):
     for entry in entries:
         # print(entry.name)
         list_of_files.append(entry)
+     # filter out the ignore_directories    
+    list_of_files = get_filtered_list(list_of_files,ignore_dirs)    
+
     return list_of_files
 
-def get_list_of_files_by_extension(src_code_directory,extn,ignore_dirs=['build','bin']):
+def get_list_of_files_by_extension(src_code_directory,extn,ignore_dirs):
     from pathlib import Path
     basepath = Path(src_code_directory)
     list_of_files = basepath.glob('**/*.' + str(extn))
@@ -54,6 +37,7 @@ def get_list_of_files_by_extension(src_code_directory,extn,ignore_dirs=['build',
     for item in list_of_files:
         extn_files.append(str(item))    
     # filter out the ignore_directories    
+    extn_files = get_filtered_list(extn_files,ignore_dirs)
 
     return extn_files
 
@@ -149,7 +133,7 @@ def get_all_old_copyright_text(old_copyright_directory):
         return all_old_copyright_text
 
 
-def update_copyright_text_all(old_copyright_file, new_copyright_file, src_code_directory, extn_list,old_copyright_directory):
+def update_copyright_text_all(old_copyright_file, new_copyright_file, src_code_directory, extn_list,old_copyright_directory,ignore_dirs=['build','bin']):
         import mmap
         import os
         # read the old & neew copyright text
@@ -162,7 +146,7 @@ def update_copyright_text_all(old_copyright_file, new_copyright_file, src_code_d
                 # get the list of src files to update
                 list_of_files=[]
                 for ext in extn_list:
-                        list_of_files.extend(get_list_of_files_by_extension(src_code_directory,ext))
+                        list_of_files.extend(get_list_of_files_by_extension(src_code_directory,ext,ignore_dirs))
        
                 for src_code_file in list_of_files:
                         # print(os.stat(src_code_file).st_size)                        
@@ -202,7 +186,7 @@ if __name__=="__main__":
     # copyright_text = get_copyright_text(copyright_file)
     # print(copyright_text)
     # prepend_copyright_text(src_code_file,copyright_file)
-    
+###############################################################################    
     # get_list_of_files_to_update(src_code_directory)
 #     extn = 'cpp'
 #     list_of_files = get_list_of_files_by_extension(src_code_directory,extn)
@@ -217,10 +201,10 @@ if __name__=="__main__":
 #       get_list_of_files_by_extension(src_code_directory,extn,ignore_dir)
 
 ###############################################################################
-#     list_of_elements = ['~/coding/python-coding/1','~/coding/python-coding/2','~/trailers-py-2/AddCopyright']
-#     values = ['/1' ,'/2']
-#     get_filtered_list(list_of_elements,values)
+    list_of_elements = ['~/coding/python-coding/1','~/coding/python-coding/2','~/trailers-py-2/AddCopyright/3']
+    values = ['/1' ,'/2']
+    get_filtered_list(list_of_elements,values)
 ###############################################################################
-#     old_copyright_directory = 'old_copyright_dir/old_copyright_2.txt'
-    old_copyright_directory = 'old_copyright_dir'
-    print(get_all_old_copyright_text(old_copyright_directory))
+# #     old_copyright_directory = 'old_copyright_dir/old_copyright_2.txt'
+#     old_copyright_directory = 'old_copyright_dir'
+#     print(get_all_old_copyright_text(old_copyright_directory))
