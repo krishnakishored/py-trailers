@@ -8,9 +8,9 @@ def get_copyright_text(copyright_file):
     return copyright_text
 
 ###############################################################################
-def get_filtered_list(list_of_elements, values):            
+def get_filtered_list(list_of_elements, ignore_dirs):            
         filtered_list = list_of_elements
-        for val in values:
+        for val in ignore_dirs:
                filtered_list = [x for x in filtered_list if x.find(val) == -1]
         #        print(filtered_list)
         return filtered_list       
@@ -24,7 +24,7 @@ def get_list_of_files_in_directory(src_code_directory,ignore_dirs=[]):
     for entry in entries:
         # print(entry.name)
         list_of_files.append(entry)
-     # filter out the ignore_directories    
+     # filter out the ignore_dirs    
     list_of_files = get_filtered_list(list_of_files,ignore_dirs)    
 
     return list_of_files
@@ -36,22 +36,22 @@ def get_list_of_files_by_extension(src_code_directory,extn,ignore_dirs):
     extn_files = []
     for item in list_of_files:
         extn_files.append(str(item))    
-    # filter out the ignore_directories    
+    # filter out the ignore_dirs    
     extn_files = get_filtered_list(extn_files,ignore_dirs)
 
     return extn_files
 
 ###############################################################################
 
-def prepend_copyright_text_single(src_code_file,copyright_text):
-        import sys
+def prepend_copyright_text_single(src_code_file,copyright_text,ignore_dirs):
+        # import sys
 #     from tempfile import TemporaryFile
 #     copyright_text = get_copyright_text(copyright_file)
         try:
                 with open(src_code_file,"r") as fsrc:
                         src_code = fsrc.read()
                         # print(src_code)
-                        full_content = copyright_text + "\n" + src_code
+                        full_content = '/*'+ '\n' + copyright_text + '\n'+'*/' + "\n\n" + src_code # add as c++ style comments block
                         # print(full_content)
      
         except ValueError as ve:
@@ -67,15 +67,15 @@ def prepend_copyright_text_single(src_code_file,copyright_text):
 
 
 ###############################################################################
-def prepend_copyright_text_all(copyright_file, src_code_directory,extn_list):
+def prepend_copyright_text_all(copyright_file, src_code_directory,extn_list,ignore_dirs):
     list_of_files=[]
     for ext in extn_list:
-        list_of_files.extend(get_list_of_files_by_extension(src_code_directory,ext))
+        list_of_files.extend(get_list_of_files_by_extension(src_code_directory,ext,ignore_dirs))
         # list_of_files=get_list_of_files_by_extension(src_code_directory,ext) # hardcoded: ToDo: changes to extn
      
     # print(list_of_files)
     for src_code_file in list_of_files:
-        prepend_copyright_text_single(src_code_file,copyright_file)
+        prepend_copyright_text_single(src_code_file,copyright_file,ignore_dirs)
 
 ###############################################################################
 # Find and replace copyright text
@@ -100,14 +100,14 @@ def replace_copyright_text_single(src_code_file,old_copyright_text,new_copyright
 
 
 
-def replace_copyright_text_all(old_copyright_file, new_copyright_file, src_code_directory, extn_list):
+def replace_copyright_text_all(old_copyright_file, new_copyright_file, src_code_directory, extn_list,ignore_dirs):
         with open(old_copyright_file,"r") as foldcopy, open(new_copyright_file,"r") as fnewcopy:
                 old_copyright_text = foldcopy.read()
                 new_copyright_text = fnewcopy.read()  
         
         list_of_files=[]
         for ext in extn_list:
-                list_of_files.extend(get_list_of_files_by_extension(src_code_directory,ext))        
+                list_of_files.extend(get_list_of_files_by_extension(src_code_directory,ext,ignore_dirs))        
         
         for src_code_file in list_of_files:
                 replace_copyright_text_single(src_code_file,old_copyright_text,new_copyright_text)   
@@ -169,7 +169,7 @@ def update_copyright_text_all(new_copyright_file, src_code_directory, extn_list,
                                         
                                         # avoid if the new copyright already exists        
                                         if doPrepend and (-1 == content.find(new_copyright_text[:].encode())):
-                                                prepend_copyright_text_single(src_code_file,new_copyright_text)
+                                                prepend_copyright_text_single(src_code_file,new_copyright_text,ignore_dirs)
                         
         except Exception as e:
                print(e)
@@ -193,9 +193,9 @@ if __name__=="__main__":
 
 ###############################################################################
 #       src_code_directory = 'my_directory' 
-#       ignore_dir = ['build'] 
+#       ignore_dirs = ['build'] 
 #       extn = ['cpp','h']
-#       get_list_of_files_by_extension(src_code_directory,extn,ignore_dir)
+#       get_list_of_files_by_extension(src_code_directory,extn,ignore_dirs)
 
 ###############################################################################
     list_of_elements = ['~/coding/python-coding/1','~/coding/python-coding/2','~/trailers-py-2/AddCopyright/3']
