@@ -45,6 +45,9 @@ if __name__ == "__main__":
     today2 = eval(repr(today)) # Using this string representation, we can reconstruct the obj
     print(str(today2)) # The eval() built-in function accepts a string and converts it to a datetime object.
 
+    # We can see that eval(repr_s) returns again a datetime.datetime object. 
+    # The String created by str can't be turned into a datetime.datetime object by parsing it. 
+
     x = Robot("Marvin", 1979)
         
     x_str = str(x)

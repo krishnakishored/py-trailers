@@ -1,3 +1,12 @@
+'''
+The proper way to define a method:
+ - Instead of defining a function outside of a class definition and binding it to a class attribute, we define a method directly inside (indented) of a class definition.
+ - A method is "just" a function which is defined inside of a class.
+ - The first parameter is used a reference to the calling instance.
+ - This parameter is usually called self.
+'''
+
+
 class Robot:
     def __init__(self,name=None):
         # print("__init__ has been executed")
@@ -22,16 +31,32 @@ class Robot:
         return self.build_year    
      
 
+def hi(obj):
+    print("Hi I'm " + obj.name)
+
+# It's possible to define a method like this, But Do Not Do it!
+class Robot2:
+    say_hi = hi
+
+
 if __name__=="__main__":
+    a = Robot2()
+    a.name = "Marvin"
+    a.say_hi() # Hi I'm Marvin
+
+    # Robot.say_hi(x)". and "x.say_hi()" are equivalent. 
+
     x = Robot()
     # x.say_hi()
     # y= Robot("Marvin")
     # y.say_hi()
     x.set_name("Henry")
     x.say_hi()
-    y = Robot()
-    y.set_name(x.get_name())
+    y = Robot("Lewis") # uses __init__
+    # y.set_name(x.get_name())
     print(y.get_name())
+
+
 
 
 
