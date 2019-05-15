@@ -214,6 +214,10 @@ Collections(list,tuple,set,dictionary):-
     - properties and attributes are essentially different things in Python.
     - Attributes are created inside of a class. Also we can dynamically create arbitary new attributes for existing classes
     - The instances possess dictionaries __dict__, which they use to store their attributes and their corresponding values: 
+    - Python's class attributes and object attributes are stored in separate dictionaries
+
+
+
 25) How to add a counter attribute to find the no. of times a function is invoked - Using an attribute of function
 26) method vs function: 
 A method differs from a function only in two aspects:
@@ -346,7 +350,17 @@ interview questions - bogotobogo
 16. Manipulating functions as first-class objects
 17. docstrings vs comments
 18. using lambdda
-19. classmethod vs staticmethod
+19. classmethod vs staticmethod 
+
+      * omitting the parameter "self" is class method, it's possible to access the method via the class name, but we can't call it via an instace 
+            - We want a method, which we can call via the class name or via the instance name without the necessity of passing a reference to an instance to it. The solution consists in static methods, which don't need a reference to an instance. It's easy to turn a method into a static method. 
+            - All we have to do is to add a line with "@staticmethod" directly in front of the method header. It's the decorator syntax. 
+
+      * Static methods shouldn't be confused with class methods. Like static methods class methods are not bound to instances, but unlike static methods class methods are bound to a class. The first parameter of a class method is a reference to a class, i.e. a class object. They can be called via an instance or the class name. 
+            - They are often used, where we have static methods, which have to call other static methods. To do this, we would have to hard code the class name, if we had to use static methods. This is a problem, if we are in a use case, where we have inherited classes.
+            - They are used in the definition of factory methods
+
+
 20. Making a list with unique element from a list with duplicate elements
 21. *args and **kwargs
 22. mutable vs immutable
