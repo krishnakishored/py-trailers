@@ -32,11 +32,9 @@ class Robot:
         
     def get_build_year(self):
         return self.build_year    
-    
+
+
 if __name__ == "__main__":
-
-
-
 
     import datetime
     today = datetime.datetime.now()

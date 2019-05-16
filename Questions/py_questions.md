@@ -31,6 +31,11 @@
 19) Are there equivalents to pointers & references in C/C++
 20) How do create an executable with .py files
 21) use of __name__=="__main__"
+
+      Every module in python has a special attribute called __name__ . 
+      The value of __name__  attribute is set to '__main__'  when module run as main program. 
+      Otherwise the value of __name__  is set to contain the name of the module.
+
 22) @property
 23) recursive functions 
 24) Memoization 
@@ -215,6 +220,13 @@ Collections(list,tuple,set,dictionary):-
     - Attributes are created inside of a class. Also we can dynamically create arbitary new attributes for existing classes
     - The instances possess dictionaries __dict__, which they use to store their attributes and their corresponding values: 
     - Python's class attributes and object attributes are stored in separate dictionaries
+    - Let's summarize the usage of private and public attributes, getters and setters and properties: 
+    Let's assume that we are designing a new class and we pondering about an instance or class attribute "OurAtt". We have to observe the following issues:
+      - Will the value of "OurAtt" be needed by the possible users of our class? If not, we can or should make it a private attribute.
+      - If it has to be accessed, we make it accessible as a public attribute
+      - We will define it as a private attribute with the corresponding property, if and only if we have to do some checks or transformation of the data.
+      - Alternatively, you could use a getter and a setter, but using a property is the Pythonic way to deal with it!
+            
 
 
 

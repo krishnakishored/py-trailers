@@ -57,8 +57,6 @@ def f(x):
     return "Monty Python"
 
 
-
-
 class C: 
     '''
     how you can count instance with class attributes.
@@ -116,9 +114,6 @@ class fraction(object):
 
     def __str__(self):
         return str(self.numerator)+'/'+str(self.denominator)
-
-
-
 
 
 if __name__ == "__main__":
