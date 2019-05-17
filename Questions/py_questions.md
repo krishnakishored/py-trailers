@@ -249,6 +249,8 @@ There is no "real" destructor, but something similar, i.e. the method __del__. I
 
       Encapsulation is often accomplished by providing two kinds of methods for attributes: The methods for retrieving or accessing the values of attributes are called getter methods. Getter methods do not change the values of attributes, they just return the values. The methods used for changing the values of attributes are called setter methods. 
 
+      Python is implicitly polymorphic.We can call a function with various types
+
 
 
 Exception Handling:-
