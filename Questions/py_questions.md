@@ -252,7 +252,7 @@ There is no "real" destructor, but something similar, i.e. the method __del__. I
       Python is implicitly polymorphic.We can call a function with various types
 
 
-
+----
 Exception Handling:-
 -----------------------
 
@@ -269,12 +269,12 @@ Exception Handling:-
 11) will finally run after return??
 12) How do you implement custom exception in python ??
 
-Threading :-
+----
+
+Concurrency :-
 --------------
 1) What is the difference between Process and Thread?
 > Using threads allows a program to run multiple operations concurrently in the same process space.
-
-
 2) What are the benefits of multi-threaded programming?
 3) What is difference between user Thread and daemon Thread?
 4) What are the libraries in Python that support threads?
@@ -296,6 +296,41 @@ Threading :-
 15) Can we start a thread twice ??
 16) Subclassing threads
 
+* The threading library can be used to execute any Python callable in its own thread. To do this, you create a Thread instance and supply the callable that you wish to execute as a target. 
+* 
+* Threads are executed in their own system-level thread (e.g., a POSIX thread or Windows threads) that is fully managed by the host operating system. Once started, threads run independently until the target function returns.
+      - `t.start()`  - When you create a thread instance, it doesn’t start executing until you invoke its start() method (which invokes the target function with the arguments you supplied).   
+      `t.is_alive()` - to query a thread instance to see if it's still running       
+      `t.join()` - request to join with a thread, which waits for it to terminate          
+* Daemonic Threads
+      - The interpreter remains running until all threads terminate. For long-running threads or background tasks that run forever, you should consider making the thread daemonic. For example:
+      ~~~python
+      t = Thread(target=countdown, args=(10,), daemon=True)
+      t.start()
+      ~~~
+      - Daemonic threads can’t be joined. However, they are destroyed automatically when the main thread terminates.
+* Due to a global interpreter lock (GIL), Python threads are restricted to an execution model that only allows one thread to execute in the interpreter at any given time. For this reason, Python threads should generally not be used for computationally intensive tasks where you are trying to achieve parallelism on multiple CPUs. They are much better suited for I/O handling and handling concurrent execution in code that performs blocking operations (e.g., waiting for I/O, waiting for results from a database, etc.).
+
+* Event objects are best used for one-time events. That is, you create an event, threads wait for the event to be set, and once set, the Event is discarded. If a thread is going to repeatedly signal an event over and over, you’re probably better off using a Condition object instead. 
+
+* A critical feature of Event objects is that they wake all waiting threads. If you are writing a program where you only want to wake up a single waiting thread, it is probably better to use a Semaphore or Condition object instead.
+
+* Perhaps the safest way to send data from one thread to another is to use a Queue from the queue library. To do this, you create a Queue instance that is shared by the threads. Threads then use put() or get() operations to add or remove items from the queue.
+
+* Queue instances already have all of the required locking, so they can be safely shared by as many threads as you wish. When using queues, it can be somewhat tricky to coordinate the shutdown of the producer and consumer. A common solution to this problem is to rely on a special sentinel value, which when placed in the queue, causes consumers to terminate.
+
+* One caution with thread queues is that putting an item in a queue doesn’t make a copy of the item. Thus, communication actually involves passing an object reference between threads. If you are concerned about shared state, it may make sense to only pass im‐ mutable data structures (e.g., integers, strings, or tuples) or to make deep copies of the queued items. 
+
+* A daemon thread will shut down immediately when the program exits. One way to think about these definitions is to consider the daemon thread a thread that runs in the background without worrying about shutting it down.  If a program is running Threads that are not daemons, then the program will wait for those threads to complete before it terminates. Threads that are daemons, however, are just killed wherever they are when the program is exiting.
+
+* ThreadPoolExecutor
+      - There’s an easier way to start up a group of threads than the one you saw above. It’s called a ThreadPoolExecutor, and it’s part of the standard library in concurrent.futures 
+      
+
+
+
+
+----
 Handling JSON
 --------------
 
