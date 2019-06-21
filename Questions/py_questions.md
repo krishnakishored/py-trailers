@@ -357,6 +357,8 @@ Concurrency :-
       - There’s an easier way to start up a group of threads than the one you saw above. It’s called a ThreadPoolExecutor, and it’s part of the standard library in concurrent.futures 
       
 
+* asynchio
+* At the heart of async IO are coroutines. A coroutine is a specialized version of a Python generator function. 
 
 
 
