@@ -7,11 +7,20 @@ import argparse  # for adding help & command-line options
 # maps argument to column names in the base.csv
 translation_map = {
     "english": "TEXT TO BE TRANSLATED",
-    "portuguese": "pt-BR (Brazilian Portuguese)",
-    "czech": "cz-CZ (Czech)",
-    "polish": "pl-PL (Polish)",
-    "swedish": "sv-SE (Swedish)",
-    "norwegian": "no-NO (Norwegian)"
+    # "portuguese": "pt-BR (Brazilian Portuguese)",
+    # "czech": "cz-CZ (Czech)",
+    # "polish": "pl-PL (Polish)",
+    # "swedish": "sv-SE (Swedish)",
+    # "norwegian": "no-NO (Norwegian)",
+    
+    "danish": "da-DA (Danish)" ,
+    "dutch" : "Nl-BE (Dutch)", 
+    "finnish" :"fi-FI (Finnish)",
+    "greek" :"el-EL (Greek)",
+    "hebrew" : "he-IL (Hebrew)",
+    "hungarian" : "hu-HU (Hungarian)",
+    # "italian" : "it-IT(Italian)",
+    
 }
 
 
@@ -80,12 +89,13 @@ def text_translator(base_file, input_file, output_lang):
     '''
     subtext = translation_map[output_lang]
     subtext = subtext[:subtext.find(" ")]
+    print(subtext)
     output_file = input_file.replace('cs-CS', subtext)
 
     reference_dict = get_runtime_base_voice_dict(base_file, output_lang)
 
     with open(input_file, 'r') as f_in:
-        with open(output_file, 'w', encoding='utf-8') as f_out:
+        with open(output_file, 'w', encoding='utf8') as f_out:
             for line in f_in:
                 query_text = get_text_inbetween(line, '"', '"')
                 # print(query_text)

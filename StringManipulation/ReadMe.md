@@ -20,3 +20,9 @@
     -  `$ python text_translator.py` -  (default output_language set to 'all')
         `TTS_basicaudio-sv-SE.sexp ` gets created as the required output file. 
         Also *Base_voice_string_translations.csv* from *Base_voice_string_translations.xlsx*  is created as part of translation. 
+		
+#### Setup for Windows Environment
+
+python text_translator.py -b Multilanguage.xlsx -i TTS_basicaudio-cs-CS.sexp -l all
+		
+`$ python text_translator.py -b Navigation_base_voices_2020Q1.xlsx -i TTS_basicaudio-cs-CS.sexp -l all `
