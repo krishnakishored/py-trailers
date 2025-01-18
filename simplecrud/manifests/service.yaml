@@ -1,0 +1,33 @@
+# The apiVersion defines the versioned schema of this representation of an object.
+apiVersion: v1
+
+# The kind is a string value representing the REST resource this object represents.
+kind: Service
+
+# Standard object's metadata.
+metadata:
+  # Name of the service, must be unique.
+  name: simplecrud
+
+# Specification of the desired behavior of the Service.
+spec:
+  # expose the service on a static port on each Node in your cluster.
+  type: NodePort  
+  # Label selector for pods. Existing pods that match these labels will be targeted by this service.
+  selector:
+    app: simplecrud
+
+  # List of ports and protocols that this service will listen on.
+  ports:
+    - 
+      # The protocol for this port; must be either TCP or UDP.
+      protocol: TCP
+
+      # The port that this service will listen on.
+      port: 8020
+
+      # The port on the target pods that this service will forward incoming connections to.
+      targetPort: 8020
+      
+      # Optional: specify a specific port in the NodePort range (30000-32767)
+      nodePort: 30080  

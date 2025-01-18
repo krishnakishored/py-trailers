@@ -1,0 +1,12 @@
+numpy
+ipykernel
+matplotlib
+pandas
+plotly
+scipy
+pyarrow
+
+openpyxl
+xlwings
+tabulate
+XlsxWriter

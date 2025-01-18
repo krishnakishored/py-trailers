@@ -1,0 +1,17 @@
+# This is a ConfigMap resource. ConfigMaps allow you to decouple configuration artifacts from image content to keep containerized applications portable.
+
+# The apiVersion defines the versioned schema of this representation of an object.
+apiVersion: v1
+
+# The kind is a string value representing the REST resource this object represents.
+kind: ConfigMap
+
+# Standard object's metadata.
+metadata:
+  # Name of the ConfigMap, must be unique.
+  name: simplecrud-config
+
+# Data contains the configuration data. Each key-value pair in the data field of the ConfigMap corresponds to a configuration property.
+data:
+  # The key is the configuration property name and the value is its value. Here, PORT is the property and "8020" is its value.
+  PORT: "8020"

@@ -1,0 +1,19 @@
+### curl cmd to query a model
+
+#### Generate a respone with / without stream
+
+curl http://localhost:11434/api/generate 
+-d '{"model": "llama3.2:1b", "prompt": "tell a fact about usa", "stream":false, "temperature":0.3}' 
+-H "Content-Type: application/json"
+
+#### Generate in a given format
+
+curl http://localhost:11434/api/generate 
+-d '{"model": "llama3.2:1b", "prompt": "tell a fact about usa", "stream":false, "temperature":0.3, "format":"json"}' 
+-H "Content-Type: application/json"
+
+
+#### Chat with a model
+curl http://localhost:11434/api/chat 
+-d '{ "model": "llama3.2:1b", "messages": [ { "role": "user", "content": "tell me a fun fact about Mozambique" } ], "stream":false }'
+-H "Content-Type: application/json"

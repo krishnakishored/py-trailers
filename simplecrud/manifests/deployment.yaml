@@ -1,0 +1,46 @@
+# The apiVersion defines the versioned schema of this representation of an object.
+apiVersion: apps/v1
+
+# The kind is a string value representing the REST resource this object represents.
+kind: Deployment
+
+# Standard object's metadata.
+metadata:
+  # Name of the deployment, must be unique.
+  name: simplecrud
+
+# Specification of the desired behavior of the Deployment.
+spec:
+  # Number of desired pods. This is a pointer to distinguish between explicit zero and not specified.
+  replicas: 1
+
+  # Label selector for pods. Existing ReplicaSets whose pods are selected by this will be the ones affected by this deployment.
+  selector:
+    matchLabels:
+      app: simplecrud
+
+  # Template describes the pods that will be created.
+  template:
+    metadata:
+      labels:
+        app: simplecrud
+
+    # A single application container that you want to run within a pod.
+    spec:
+      containers:
+      - name: simplecrud
+        # The image name to use for the container
+        image: simplecrud:1.0.0
+
+        # List of ports to expose from the container.
+        ports:
+        - containerPort: 8020
+
+        # List of environment variables to set in the container.
+        env:
+        - name: PORT
+          valueFrom:
+            # Selects a key from a ConfigMap.
+            configMapKeyRef:
+              name: simplecrud-config
+              key: PORT

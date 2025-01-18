@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "sample-project"
+version = "0.1.0"
+description = ""
+authors = ["Krishna Kishore Donthikurthi <kishore.donthikurthi@ispace.com>"]
+# readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+sample-library = {path = "../sample_library/dist/sample_library-0.1.0-py3-none-any.whl"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
